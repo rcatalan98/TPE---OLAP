@@ -14,9 +14,7 @@ public class QueryGenerator {
 
     public static void generateInsertQuery(String tableName, List<? extends QueryDto> dtos, String file) {
         List<String> queries = new LinkedList<>();
-        dtos.forEach(dto -> {
-            queries.add(generateInsertQuery(tableName, dto.toQueryParams()));
-        });
+        dtos.forEach(dto -> queries.add(generateInsertQuery(tableName, dto.toQueryParams())));
         generateDump(queries, "olapDW" + file);
     }
 
@@ -39,7 +37,7 @@ public class QueryGenerator {
     }
 
     private static void generateDump(List<String> queries, String fileName) {
-        try(BufferedWriter writer = new BufferedWriter(new FileWriter(fileName + ".sql", true))) {
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter("./sqlFiles/"+ fileName + ".sql", true))) {
             for (String query: queries) {
                 writer.write(query);
                 writer.newLine();
