@@ -1,9 +1,4 @@
-package com.company;
-
-import com.company.dtos.ClubDto;
-import com.company.dtos.CountryDto;
-import com.company.dtos.QueryDto;
-import com.company.dtos.SubPositionDto;
+package com.company.dtos;
 
 import java.util.Arrays;
 import java.util.List;

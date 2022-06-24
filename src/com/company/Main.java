@@ -1,11 +1,13 @@
 package com.company;
 
+import com.company.dtos.*;
+
 import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.company.Constants.*;
+import static com.company.dtos.Constants.*;
 
 public class Main {
 
@@ -25,7 +27,7 @@ public class Main {
         List<String> pathNames;
         //lista de archivos por linea
         List<List<List<String>>> filesLines = new LinkedList<>();
-        String baseDir = "/home/abossi/Desktop/archive/";
+        String baseDir = "./assets/";
         File f = new File(baseDir);
         pathNames = Arrays.asList(Objects.requireNonNull(f.list()));
         System.out.println("Reading files");

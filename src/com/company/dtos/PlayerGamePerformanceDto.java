@@ -1,7 +1,4 @@
-package com.company;
-
-import com.company.dtos.ClubDto;
-import com.company.dtos.QueryDto;
+package com.company.dtos;
 
 import java.util.Arrays;
 import java.util.List;
