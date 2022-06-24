@@ -1,5 +1,8 @@
 package com.company;
 
+import com.company.dtos.ClubDto;
+import com.company.dtos.QueryDto;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
