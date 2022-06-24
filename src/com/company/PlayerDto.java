@@ -1,4 +1,4 @@
-package com.company.dtos;
+package com.company;
 
 import java.util.Arrays;
 import java.util.List;
@@ -80,7 +80,7 @@ public class PlayerDto extends QueryDto {
     public void sanitizeStrings() {
         this.name = "'" + name + "'";
         this.foot = "'" + foot + "'";
-        this.dateOfBirth = "'" + dateOfBirth + "'";
+        this.dateOfBirth = dateOfBirth.equals("") ? "null" : "'" + dateOfBirth + "'";
         setValues();
     }
 }

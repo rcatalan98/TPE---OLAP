@@ -1,13 +1,11 @@
 package com.company;
 
-import com.company.dtos.*;
-
 import java.io.File;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.company.dtos.Constants.*;
+import static com.company.Constants.*;
 
 public class Main {
 
@@ -242,16 +240,21 @@ public class Main {
                 club = new CountryDto(playerLine.get(PlayerFields.PLAYER_CITIZENSHIP.value));
                 countries.add(club);
             }
-
+            String foot = playerLine.get(PlayerFields.PLAYER_FOOT.value);
+            if(foot.equals("")){
+                foot = "Right";
+            }
+            String date = playerLine.get(PlayerFields.PLAYER_BIRTH.value);
             PlayerDto player = new PlayerDto(
                     playerLine.get(PlayerFields.PLAYER_ID.value),
                     sPosition,
                     club,
                     playerLine.get(PlayerFields.PLAYER_NAME.value),
                     playerLine.get(PlayerFields.PLAYER_HEIGHT.value),
-                    playerLine.get(PlayerFields.PLAYER_FOOT.value),
+                    foot,
                     (v.getMarketValue().equals("") ? "0" : v.getMarketValue()),
-                    playerLine.get(PlayerFields.PLAYER_BIRTH.value), c);
+                    date,
+                    c);
             players.add(player);
         });
     }

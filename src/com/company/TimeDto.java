@@ -1,4 +1,4 @@
-package com.company.dtos;
+package com.company;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

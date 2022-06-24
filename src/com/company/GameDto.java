@@ -1,4 +1,4 @@
-package com.company.dtos;
+package com.company;
 
 import java.util.Arrays;
 import java.util.List;
