@@ -5,7 +5,7 @@ public class Constants {
     public enum PlayerFields {
         PLAYER_ID(0), PLAYER_CLUB(1), PLAYER_NAME(2), PLAYER_BIRTH(3),
         PLAYER_POSITION(4), PLAYER_SUBPOSITION(5), PLAYER_FOOT(6), PLAYER_HEIGHT(7),
-        PLAYER_VALUATION(8);
+        PLAYER_VALUATION(8), PLAYER_CITIZENSHIP(9);
 
         public final int value;
 

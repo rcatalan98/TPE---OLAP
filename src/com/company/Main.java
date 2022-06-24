@@ -22,6 +22,11 @@ public class Main {
     static List<TimeDto> timeKeys = new LinkedList<>();
     static List<MarketValueDto> marketValues = new LinkedList<>();
 
+    static CountryDto unidentifiedCoutry = new CountryDto("Unknown Country");
+
+    static int unidentifiedTeamsNum = 0;
+    static int newTeamnum = 36;
+
     public static void main(String[] args) {
 	// write your code here
         List<String> pathNames;
@@ -56,7 +61,7 @@ public class Main {
         System.out.println("Writing game queries");
         QueryGenerator.generateInsertQuery("Game", games, "games");
         System.out.println("Writing time queries");
-        QueryGenerator.generateInsertQuery("\"Time\"", timeKeys, "timekeys");
+        QueryGenerator.generateInsertQuery("Time", timeKeys, "timekeys");
         System.out.println("Writing appearances queries");
         List<PlayerGamePerformanceDto> first = new ArrayList<>(appearances.subList(0, (appearances.size() + 1)/3));
         QueryGenerator.generateInsertQuery("PlayerGamePerformance", first, "appearances1");
@@ -122,6 +127,7 @@ public class Main {
     }
 
     public static void generateGamesAndTimes(List<List<String>> gameLines) {
+
         gameLines.forEach(gameLine -> {
             CompetitionDto c = competitions.stream()
                     .filter(competition -> competition.getId()
@@ -132,15 +138,38 @@ public class Main {
                     .filter(club -> club.getId()
                             .equals(gameLine.get(GameFields.GAME_HOME_CLUB_ID.value)))
                     .findFirst();
-            ClubDto home = homeOpt.orElse(new ClubDto(gameLine.get(GameFields.GAME_HOME_CLUB_ID.value),
-                    c.getCountry(), "Unidentified", "0"));
+
+            ClubDto home;
+
+
+            if (homeOpt.isPresent()){
+                home = homeOpt.get();
+            }
+            else{
+                home = new ClubDto(gameLine.get(GameFields.GAME_HOME_CLUB_ID.value),
+                                unidentifiedCoutry, "Unidentified team n° " + unidentifiedTeamsNum, "0");
+                clubs.add(home);
+                unidentifiedTeamsNum++;
+            }
+
 
             Optional<ClubDto> awayOpt = clubs.stream()
                     .filter(club -> club.getId()
                             .equals(gameLine.get(GameFields.GAME_AWAY_CLUB_ID.value)))
                     .findFirst();
-            ClubDto away = awayOpt.orElse(new ClubDto(gameLine.get(GameFields.GAME_AWAY_CLUB_ID.value),
-                    c.getCountry(), "Unidentified", "0"));
+
+            ClubDto away;
+
+            if (awayOpt.isPresent()){
+                away = awayOpt.get();
+            }
+            else{
+                away = new ClubDto(gameLine.get(GameFields.GAME_AWAY_CLUB_ID.value),
+                                unidentifiedCoutry, "Unidentified team n° " + unidentifiedTeamsNum, "0");
+                clubs.add(away);
+                unidentifiedTeamsNum++;
+            }
+
 
             String[] dateParts = gameLine.get(GameFields.GAME_DATE.value).split("-");
             LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]),
@@ -198,8 +227,27 @@ public class Main {
                     playerLine.get(PlayerFields.PLAYER_VALUATION.value).replaceAll(".0", ""),
                     LocalDate.MIN));
 
-            PlayerDto player = new PlayerDto(playerLine.get(PlayerFields.PLAYER_ID.value),
-                    sPosition, c.getCountry(), playerLine.get(PlayerFields.PLAYER_NAME.value),
+
+            Optional<CountryDto> countryDto = countries.stream()
+                    .filter(country -> country.getName()
+                            .equals(playerLine.get(PlayerFields.PLAYER_CITIZENSHIP.value)))
+                    .findFirst();
+
+            CountryDto club;
+
+            if (countryDto.isPresent()){
+                club = countryDto.get();
+            }
+            else{
+                club = new CountryDto(playerLine.get(PlayerFields.PLAYER_CITIZENSHIP.value));
+                countries.add(club);
+            }
+
+            PlayerDto player = new PlayerDto(
+                    playerLine.get(PlayerFields.PLAYER_ID.value),
+                    sPosition,
+                    club,
+                    playerLine.get(PlayerFields.PLAYER_NAME.value),
                     playerLine.get(PlayerFields.PLAYER_HEIGHT.value),
                     playerLine.get(PlayerFields.PLAYER_FOOT.value),
                     (v.getMarketValue().equals("") ? "0" : v.getMarketValue()),
@@ -252,5 +300,6 @@ public class Main {
         });
         competitions.addAll(competitionsSet);
         countries.addAll(countriesSet);
+        countries.add(unidentifiedCoutry);
     }
 }

@@ -32,9 +32,7 @@ public class ClubDto extends QueryDto {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ClubDto clubDto = (ClubDto) o;
-        return getCountry().equals(clubDto.getCountry()) &&
-                getName().equals(clubDto.getName()) &&
-                getNationalTeamPlayers().equals(clubDto.getNationalTeamPlayers());
+        return getId().equals(clubDto.getId());
     }
 
     @Override
