@@ -74,7 +74,7 @@ public class TimeDto extends QueryDto {
 
     @Override
     public List<String> generateColumns() {
-        return Arrays.asList("TImeKey", "DateId", "DayNbMonth", "DayNbYear", "DayNbSeason",
+        return Arrays.asList("TImeKey", "Date", "DayNbMonth", "DayNbYear", "DayNbSeason",
                 "MonthNumber", "MonthName", "Year", "Season");
     }
 
