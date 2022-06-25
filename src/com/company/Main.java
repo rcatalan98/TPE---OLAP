@@ -23,7 +23,6 @@ public class Main {
     static CountryDto unidentifiedCoutry = new CountryDto("Unknown Country");
 
     static int unidentifiedTeamsNum = 0;
-    static int newTeamnum = 36;
 
     public static void main(String[] args) {
 	// write your code here
