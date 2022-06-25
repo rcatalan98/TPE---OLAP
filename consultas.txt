@@ -58,6 +58,16 @@ champions_played_times as (
         WHERE season = '2019-2020' or season = '2020-2021' or season = '2021-2022'
     )
     GROUP BY perf.playerid
+)
+SELECT DISTINCT young_players.name, young_players.playerid, champions_played_times.sum as minutes_played, young_players.marketvalue as market_value FROM young_players_defenders_mktvalue as young_players NATURAL JOIN champions_played_times
+ORDER BY champions_played_times.sum DESC
+LIMIT 1;
+
+---2.b ¿Cuales son los 5 delanteros jóvenes más baratos con más de 20 goles en las últimas dos temporadas?
+with young_players as (
+    select *
+    from player p
+    where  extract(year from age(CURRENT_DATE,p.dateofbirth)) <=23
 ),
 played_last_two_seasons as (
     SELECT DISTINCT g2.gameid FROM game AS g2
@@ -66,17 +76,11 @@ played_last_two_seasons as (
             WHERE season = '2020-2021' or season = '2021-2022'
         )
 )
-SELECT DISTINCT young_players.name, young_players.playerid, champions_played_times.sum as minutes_played, young_players.marketvalue as market_value FROM young_players_defenders_mktvalue as young_players NATURAL JOIN champions_played_times
-ORDER BY champions_played_times.sum DESC
-LIMIT 1
-
----2.b ¿Cuales son los 5 delanteros jóvenes más baratos con más de 20 goles en las últimas dos temporadas?
-
 SELECT DISTINCT young_players.name, young_players.marketvalue, SUM(playergameperformance.goals) FROM young_players NATURAL JOIN playergameperformance
 WHERE gameid IN (SELECT * FROM played_last_two_seasons)
 GROUP BY young_players.playerid, young_players.name,young_players.marketvalue
 HAVING SUM(playergameperformance.goals) >= 20
-ORDER BY young_players.marketvalue
+ORDER BY young_players.marketvalue;
 
 -- 3.b Identificar a los 4 mejores mediocampista centrales de la Premier League de acuerdo a asistencias,
 --     minutos jugados y goles en contra que recibió su equipo con un valor menor a £20.000.000.
@@ -147,7 +151,7 @@ select name, assist_per_game
     from assist_players
 where assist_per_game> 0.3
 order by assist_per_game desc
-limit 10
+limit 10;
 
 
 -- 5.a Identificar los clubes con una cantidad de jóvenes en la plantilla mayor al promedio de cada país.
@@ -191,7 +195,6 @@ WHERE g.gamedateid IN (
     )
 GROUP BY c.competitionid
 HAVING COUNT(g.gamedateid) > 3000
-ORDER BY avg ASC
-LIMIT 1
-
+ORDER BY avg
+LIMIT 1;
 
